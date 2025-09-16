@@ -75,6 +75,11 @@ jobs:
 
           printf '%s\n' "Verified upstream branch has not changed, continuing with release..."
 
+      - name: Setup | Install dependencies
+        run: |
+          python -m pip install --upgrade pip build
+          python -m pip install --upgrade "python-semantic-release[git,github]"
+
       - name: Action | Semantic Version Release
         id: release
         # Adjust tag with desired version if applicable.
