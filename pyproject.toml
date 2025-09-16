@@ -1,6 +1,6 @@
 [project]
 name = "diffsig"
-version = "0.1.0"
+version = "0.1.0"  # Will be updated automatically
 description = "Filter diff output for significant changes"
 readme = "README.md"
 license = {file = "LICENSE"}
