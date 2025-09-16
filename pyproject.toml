@@ -1,0 +1,18 @@
+[project]
+name = "diffsig"
+version = "0.1.0"
+description = "Filter diff output for significant changes"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "nomike", email = "nomike@nomike.com"}
+]
+requires-python = ">=3.7"
+dependencies = []
+
+[project.scripts]
+diffsig = "diffsig.__main__:main"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
