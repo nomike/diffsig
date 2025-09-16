@@ -19,7 +19,9 @@ build-backend = "setuptools.build_meta"
 
 [tool.semantic_release]
 version_source = "tag"
-version_variable = "diffsig/__version__.py:__version__"
+version_variables = [
+    "diffsig/__version__.py:__version__"
+]
 version_toml = ["pyproject.toml:project.version"]
 commit_parser = "conventional"
 build_command = "python -m build --sdist --wheel ."
