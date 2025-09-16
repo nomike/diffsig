@@ -14,6 +14,7 @@ def is_significant_block_change(block1, block2, threshold=0.2):
     similarity = sm.ratio()
     return (1 - similarity) > threshold
 
+
 def filter_diff(diff_text, threshold):
     """Process diff output and report significant changes per file."""
     lines = diff_text.splitlines()
@@ -30,14 +31,16 @@ def filter_diff(diff_text, threshold):
                 current_file = parts[2][2:]  # Remove 'b/' prefix
         elif line.startswith("--- ") or line.startswith("+++ "):
             continue  # Ignore these lines for now
-        elif line.startswith('-') and not line.startswith('---'):
+        elif line.startswith("-") and not line.startswith("---"):
             removed_block.append(line[1:].strip())
-        elif line.startswith('+') and not line.startswith('+++'):
+        elif line.startswith("+") and not line.startswith("+++"):
             added_block.append(line[1:].strip())
         else:
             if removed_block and added_block:
                 if is_significant_block_change(removed_block, added_block, threshold):
-                    significant_changes_by_file.setdefault(current_file, []).append((removed_block, added_block))
+                    significant_changes_by_file.setdefault(current_file, []).append(
+                        (removed_block, added_block)
+                    )
                 removed_block = []
                 added_block = []
             elif removed_block or added_block:
@@ -46,9 +49,12 @@ def filter_diff(diff_text, threshold):
 
     if removed_block and added_block:
         if is_significant_block_change(removed_block, added_block, threshold):
-            significant_changes_by_file.setdefault(current_file, []).append((removed_block, added_block))
+            significant_changes_by_file.setdefault(current_file, []).append(
+                (removed_block, added_block)
+            )
 
     return significant_changes_by_file
+
 
 def print_changes(changes_by_file, use_color):
     """Print significant changes grouped by filename."""
@@ -58,8 +64,12 @@ def print_changes(changes_by_file, use_color):
             print("Significant change detected:")
             for line in old_block:
                 prefix = "- "
-                print(f"{RED if use_color else ''}{prefix}{line}{RESET if use_color else ''}")
+                print(
+                    f"{RED if use_color else ''}{prefix}{line}{RESET if use_color else ''}"
+                )
             for line in new_block:
                 prefix = "+ "
-                print(f"{GREEN if use_color else ''}{prefix}{line}{RESET if use_color else ''}")
+                print(
+                    f"{GREEN if use_color else ''}{prefix}{line}{RESET if use_color else ''}"
+                )
             print()
