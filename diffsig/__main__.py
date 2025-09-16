@@ -1,7 +1,7 @@
 import argparse
 import sys
 
-from diffsig.core import filter_diff
+from diffsig.core import filter_diff, print_changes
 
 # ANSI color codes
 RED = '\033[91m'
@@ -41,8 +41,10 @@ def main():
         with open(args.filename, "r", encoding="utf-8") as f:
             diff_text = f.read()
 
-    changes = filter_diff(diff_text, args.threshold)
-    print_changes(changes, use_color)
+
+    changes_by_file = filter_diff(diff_text, args.threshold)
+    print_changes(changes_by_file, use_color)
+
 
 if __name__ == "__main__":
     main()
