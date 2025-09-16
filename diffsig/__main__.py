@@ -1,6 +1,7 @@
 import argparse
 import sys
 
+from diffsig.__version__ import __version__
 from diffsig.core import filter_diff, print_changes
 
 # ANSI color codes
@@ -25,11 +26,12 @@ def main():
     parser.add_argument("filename", nargs='?', default="-",
                         help="Filename to read diff from, or '-' for stdin (default: '-')")
     parser.add_argument("--threshold", type=float, default=0.2,
-                        help="Threshold for character-level difference (default: 0.2 = 20%)")
+                        help="Threshold for character-level difference (default: 0.2 = 20%%)")
     parser.add_argument("--color", action="store_true",
                         help="Force color output even if not writing to a terminal")
     parser.add_argument("--no-color", action="store_true",
                         help="Disable color output even if writing to a terminal")
+    parser.add_argument("--version", action="version", version=f"diffsig {__version__}")
     args = parser.parse_args()
 
     output_is_terminal = sys.stdout.isatty()
