@@ -1,5 +1,3 @@
-import pytest
-
 from diffsig.core import filter_diff, is_significant_block_change
 
 
