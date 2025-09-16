@@ -1,6 +1,7 @@
 import difflib
 
 # ANSI color codes
+BOLD = "\033[1m"
 RED = "\033[91m"
 GREEN = "\033[92m"
 RESET = "\033[0m"
@@ -20,17 +21,17 @@ def filter_diff(diff_text, threshold):
     lines = diff_text.splitlines()
     significant_changes_by_file = {}
 
-    current_file = None
+    current_files = [None, None]
     removed_block = []
     added_block = []
 
     for line in lines:
         if line.startswith("diff --git"):
-            parts = line.split()
-            if len(parts) >= 3:
-                current_file = parts[2][2:]  # Remove 'b/' prefix
-        elif line.startswith("--- ") or line.startswith("+++ "):
-            continue  # Ignore these lines for now
+            continue
+        elif line.startswith("--- "):
+            current_files[0] = line.split()[1]
+        elif line.startswith("+++ "):
+            current_files[1] = line.split()[1]
         elif line.startswith("-") and not line.startswith("---"):
             removed_block.append(line[1:].strip())
         elif line.startswith("+") and not line.startswith("+++"):
@@ -38,7 +39,7 @@ def filter_diff(diff_text, threshold):
         else:
             if removed_block and added_block:
                 if is_significant_block_change(removed_block, added_block, threshold):
-                    significant_changes_by_file.setdefault(current_file, []).append(
+                    significant_changes_by_file.setdefault(f'{current_files[0]}\n{current_files[1]}', []).append(
                         (removed_block, added_block)
                     )
                 removed_block = []
@@ -49,7 +50,7 @@ def filter_diff(diff_text, threshold):
 
     if removed_block and added_block:
         if is_significant_block_change(removed_block, added_block, threshold):
-            significant_changes_by_file.setdefault(current_file, []).append(
+            significant_changes_by_file.setdefault(f'{current_files[0]}\n{current_files[1]}', []).append(
                 (removed_block, added_block)
             )
 
@@ -58,10 +59,9 @@ def filter_diff(diff_text, threshold):
 
 def print_changes(changes_by_file, use_color):
     """Print significant changes grouped by filename."""
-    for filename, changes in changes_by_file.items():
-        print(f"\nFile: {filename}")
+    for filenames, changes in changes_by_file.items():
+        print(f"{BOLD}---{filenames.split('\n')[0]}\n+++{filenames.split('\n')[1]}{RESET}")
         for old_block, new_block in changes:
-            print("Significant change detected:")
             for line in old_block:
                 prefix = "- "
                 print(

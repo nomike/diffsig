@@ -22,5 +22,5 @@ def test_filter_diff_detects_changes():
 +Hello brave new world
 """
     changes = filter_diff(diff_text, threshold=0.2)
-    assert "file.txt" in changes
-    assert len(changes["file.txt"]) == 1
+    assert "a/file.txt\nb/file.txt" in changes
+    assert len(changes["a/file.txt\nb/file.txt"]) == 1
