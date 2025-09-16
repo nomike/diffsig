@@ -3,7 +3,9 @@ name = "diffsig"
 version = "0.1.0"  # Will be updated automatically
 description = "Filter diff output for significant changes"
 readme = "README.md"
-license = {file = "LICENSE"}
+license-files = [
+    "LICENSE"
+]
 authors = [
     {name = "nomike", email = "nomike@nomike.com"}
 ]
@@ -17,9 +19,22 @@ diffsig = "diffsig.__main__:main"
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "build>=1.0",
+    "python-semantic-release>=8.0",
+    # Add other tools as needed:
+    # "pytest-cov",
+    # "ruff",
+    # "mypy",
+]
+
 [tool.semantic_release]
 version_source = "tag"
-version_variable = "diffsig/__version__.py:__version__"
+version_variables = [
+    "diffsig/__version__.py:__version__"
+]
 version_toml = ["pyproject.toml:project.version"]
 commit_parser = "conventional"
 build_command = "python -m build --sdist --wheel ."

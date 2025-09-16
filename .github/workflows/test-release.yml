@@ -1,0 +1,34 @@
+name: Test Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write  # Required for creating tags
+  id-token: write  # Required for trusted publishing
+
+jobs:
+  test-release:
+    name: Semantic Release to TestPyPI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install python-semantic-release build
+
+      - name: Run semantic-release
+        run: |
+          semantic-release version
+          semantic-release publish --repository testpypi
