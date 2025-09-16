@@ -1,5 +1,10 @@
 import difflib
 
+# ANSI color codes
+RED = "\033[91m"
+GREEN = "\033[92m"
+RESET = "\033[0m"
+
 
 def is_significant_block_change(block1, block2, threshold=0.2):
     """Check if the character-level difference between two blocks exceeds the threshold."""

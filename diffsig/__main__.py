@@ -4,22 +4,6 @@ import sys
 from diffsig.__version__ import __version__
 from diffsig.core import filter_diff, print_changes
 
-# ANSI color codes
-RED = '\033[91m'
-GREEN = '\033[92m'
-RESET = '\033[0m'
-
-def print_changes(changes, use_color):
-    """Print the significant changes with optional color."""
-    for old_block, new_block in changes:
-        print("Significant change detected:")
-        for line in old_block:
-            prefix = "- "
-            print(f"{RED if use_color else ''}{prefix}{line}{RESET if use_color else ''}")
-        for line in new_block:
-            prefix = "+ "
-            print(f"{GREEN if use_color else ''}{prefix}{line}{RESET if use_color else ''}")
-        print()
 
 def main():
     parser = argparse.ArgumentParser(description="Filter diff output for significant changes.")
